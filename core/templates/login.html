@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <meta charset="UTF-8">
+
+        <style>
+
+            .carousel-item .img-fluid {
+                width:100%;
+                height:100%;
+            }
+
+            #forms label{
+                color: white;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="http://localhost:8000">CONDOMÍNIO TITÂNIA</a>
+            </li>
+          </ul>
+        </nav>
+       <div id="forms">
+            <div class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" style="text-align: center;">
+                      <img src="https://c.pxhere.com/photos/30/c7/panasonicdmcfz20_colors_houses_apartments_architecturalphotography_publicdomaindedicationcc0-575735.jpg!d" class="d-block img-fluid" style="width: 100%;" alt="Chicago">
+                    </div>
+
+                   <!-- <form action="submit" method="POST"> {% csrf_token %}
+                        <div class="row" id="forms" style="margin-left:4px; margin-top:4px;">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="username">USUÁRIO:</label>
+                                    <input type="text" class="form-control" id="username", name="username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">SENHA:</label>
+                                    <input type="password" class="form-control" id="password", name="password">
+                                </div>
+                                {% for message in messages %}
+                                <div class="alert alert-danger">
+                                    <strong>Error!</strong> {{ message }}
+                                </div>
+                                {% endfor %} -->
+                    <div class="row" style="margin-left:4px; margin-top:20px;">
+                        <div class="col-sm-2">
+                            <a href="http://localhost:8000/list/residents/">
+                                <button type="button" class="btn btn-success" style="width: 90px">Entrar</button>
+                            </a>
+                        </div>
+                    </div>
+
+                                <!--<a href="http://localhost:8000/user/register/">
+                                    <button type="button" class="btn btn-primary" style="margin-left:4px; width: 98px;">Cadastrar</button>
+                                </a>
+                            </div>
+                        </div>
+                    </form> -->
+
+                </div>
+            </div>
+        </div>
+        <script>
+        $("#username").change(function () {
+            var username = ( $(this).val() );
+
+            $.ajax({
+
+                url: '/api/validate_username/',
+                data: {
+                    'username': username
+                },
+                success: function(data){
+                    if (username != "" && data != true){
+                        alert("Usuário não existe");
+                        $("#username").val('');
+                        $("#username").focus();                           }
+                }
+            })
+        });
+        </script>
+
+    </body>
+</html>

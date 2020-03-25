@@ -1,0 +1,264 @@
+{% extends "model-page.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+
+<style>
+
+    h2 {
+        margin-top: 50px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: auto;
+    }
+
+    .label {
+        margin-left: 50px;
+        background-color: #20B2AA;
+    }
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10">
+            <h2 style="font-family: Arial;">Cadastro de Proprietário</h2>
+        </div>
+        <div class="col-sm-2">
+            <h2><span class="label label-default">{{owner.owner_code}}</span></h2>
+        </div>
+    </div>
+    <br>
+    <br>
+    <form enctype="multipart/form-data" method="POST" id="register_resident" class="save_resident_form" action="{% url 'save_resident' %}">
+        <div class="main">
+            <div class="row">
+                <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                    <label class="control-label">Proprietário</label>
+                    <input class="form_control" type="hidden" name="id" value="{% if owner %} {{owner.id}} {% endif %}">
+                    <input class="form-control" type="text" name="owner_name" value="{% if owner %}{{owner.name}}{% endif %}">
+                </div>
+                <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
+                    <label class="control-label">Bloco</label>
+                    <select class="selectpicker form-control" name="tower" id="tower" data-live-search="True">
+                        <option value="">Selecione...</option>
+                        {% for tower in towers %}
+                            <option value="{{tower.id}}" {% if owner.tower.id == tower.id %} selected {% endif %}>{{tower.number}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
+                    <label class="control-label">Apartamento</label>
+                    <input class="form-control" type="text" min="0" name="apartment" id="apartment" value="{% if owner.apartment%}{{owner.apartment}}{% endif %}">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                    <label class="control-label">Quantidade de Moradores</label>
+                    <input class="form-control" type="text" min="1" name="amount_residents" id="amount_residents" value="{% if owner.residents%}{{owner.residents}}{% endif %}">
+                </div>
+                <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                    <label class="control-label">Tipo de Contrato</label>
+                    <select class="selectpicker form-control" name="contract_type" id="contract_type" data-live-search="True">
+                        <option value="">Selecione...</option>
+                        {% for contract_type in contract_types %}
+                            <option value="{{contract_type.id}}" {% if owner.contract_type.id == contract_type.id %} selected {% endif %}>{{contract_type}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">
+                    <label class="control-label">Situação</label>
+                    <select class="selectpicker form-control" name="situation" id="situation" data-live-search="True">
+                        <option value="">Selecione...</option>
+                        {% for situation in situations %}
+                            <option value="{{situation.id}}" {% if owner.situation.id == situation.id %} selected {% endif %}>{{situation}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                    <label class="control-label">Telefone</label>
+                    <input class="form-control" id="phone_number" name="phone_number" value="{% if owner.phone_number %}{{owner.phone_number}}{% endif %}">
+                </div>
+                <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                    <label class="control-label">Celular</label>
+                    <input class="form-control" id="cell_phone" name="cell_phone" value="{% if owner.cell_phone %}{{owner.cell_phone}}{% endif %}">
+                </div>
+                <div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">
+                    <label class="control-label">Email</label>
+                    <input class="form-control" id="email" name="email" value="{% if owner.email %}{{owner.email}}{% endif %}">
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: #20B2AA; border">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="vehicles" style="color: white;">Veículos</a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                    <label class="control-label">Veículo</label>
+                                    <select class="selectpicker form-control" name="vehicle_type" id="vehicle_type" data-live-search="True">
+                                        <option value="">Selecione...</option>
+                                        {% for vehicle_type in vehicle_types %}
+                                            <option value="{{vehicle_type.id}}" {% if owner.vehicle_type_1.id == vehicle_type.id %} selected {% endif %}>{{vehicle_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                    <label class="control-label">Marca</label>
+                                    <input class="form-control" type="text" id="vehicle_brand" name="vehicle_brand" value="{% if owner.vehicle_brand_1 %}{{owner.vehicle_brand_1}}{% endif %}">
+                                </div>
+                                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                    <label class="control-label">Modelo</label>
+                                    <input class="form-control" type="text" id="vehicle_model" name="vehicle_model" value="{% if owner.vehicle_model_1 %}{{owner.vehicle_model_1}}{% endif %}">
+                                </div>
+                                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                    <label class="control-label">Placa</label>
+                                    <input class="form-control" type="text" id="license_plate" name="license_plate" value="{% if owner.license_plate_1 %}{{owner.license_plate_1}}{% endif %}">
+                                </div>
+                            </div>
+                            <div id="second_vehicle">
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                        <label class="control-label">Veículo 2</label>
+                                        <select class="selectpicker form-control" name="vehicle_type_2" id="vehicle_type_2" data-live-search="True">
+                                            <option value="">Selecione...</option>
+                                            {% for vehicle_type in vehicle_types %}
+                                                <option value="{{vehicle_type.id}}" {% if owner.vehicle_type_2.id == vehicle_type.id %} selected {% endif %}>{{vehicle_type}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                        <label class="control-label">Marca</label>
+                                        <input class="form-control" type="text" id="vehicle_brand_2" name="vehicle_brand_2" value="{% if owner.vehicle_brand_2 %}{{owner.vehicle_brand_2}}{% endif %}">
+                                    </div>
+                                    <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                        <label class="control-label">Modelo</label>
+                                        <input class="form-control" type="text" id="vehicle_model_2" name="vehicle_model_2" value="{% if owner.vehicle_model_2 %}{{owner.vehicle_model_2}}{% endif %}">
+                                    </div>
+                                    <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                        <label class="control-label">Placa</label>
+                                        <input class="form-control" type="text" id="license_plate_2" name="license_plate_2" value="{% if owner.license_plate_2 %}{{owner.license_plate_2}}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                                    <button type="button" class="btn btn-success btn-sm" id="add_vehicle">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" id="remove_vehicle">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                    <label class="control-label">Observações</label>
+                    <textarea class="form-control" rows="5" name="note" id="note">{% if owner.notes %}{{owner.notes}}{% endif %}</textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                    <button class="btn btn-success" id="btn-save" type="submit">Salvar</button>
+                </div>
+            </div>
+            <br>
+            <div class="alert alert-danger alert-error-save"></div>
+        </div>
+        <br>
+        <br>
+    </form>
+</div>
+
+
+<script>
+
+
+
+    $(document).ready(function(){
+        $('.alert-error-save').hide();
+        $('#phone_number').keyup(function(){
+            $('#phone_number').mask('(00)0000-0000');
+        });
+        $('#cell_phone').keyup(function(){
+            $('#cell_phone').mask('(00)90000-0000');
+        });
+        if($('#vehicle_type').val() != ''){
+            $('#vehicles').trigger('click');
+        }
+
+        $('#second_vehicle').hide();
+        $('#remove_vehicle').hide();
+        $('#add_vehicle').click(function(){
+            $('#second_vehicle').show();
+            $('#add_vehicle').hide();
+            $('#remove_vehicle').show();
+        });
+        if($('#vehicle_type_2').val() != ''){
+            $('#vehicles').trigger('click');
+            $('#second_vehicle').show();
+            $('#add_vehicle').hide();
+            $('#remove_vehicle').show();
+        }
+        $('#remove_vehicle').click(function(){
+            $('#second_vehicle').hide();
+            $('#add_vehicle').show();
+            $('#remove_vehicle').hide();
+            $('#vehicle_type_2').val('');
+            $('#vehicle_model_2').val('');
+            $('#vehicle_brand_2').val('');
+            $('#license_plate_2').val('');
+        });
+
+        $('.save_resident_form').submit(function(e){
+            e.preventDefault();
+            $form = $('.save_resident_form');
+            //form = $form.serializeArray();
+            var form = document.getElementById('register_resident');
+            var formData = new FormData(form);
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    if (data.success){
+                        location.href = '/edit/resident/?id=' + data.id;
+                    }
+                    else{
+                        $('.alert-error-save').html(data.message);
+                        $('.alert-error-save').show();
+                    }
+                }
+            });
+        });
+
+    });
+
+</script>
+
+
+{% endblock %}

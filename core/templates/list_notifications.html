@@ -1,0 +1,87 @@
+{% extends "model-page.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+
+
+<style>
+    img {
+        width: 100px;
+        margin-top: -65px;
+        margin-bottom: -46px;
+        margin-left: -20px;
+    }
+
+    #aviso{
+        font-size: xx-large;
+        color: black;
+        font-family: 'H', 'Trebuchet MS', Helvetica;
+        margin-left: -63px;;
+    }
+
+    .card-header{
+        margin-top: 0px;
+        background-color: #edcb51;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="jumbotron jumbotron" style="height: 80px; background-color: white;">
+    <div class="row">
+        <div class="col-sm-5">
+            <img src="https://image.freepik.com/vetores-gratis/grafico-de-noticias-de-megafone-de-mao-dos-desenhos-animados_24877-17128.jpg">
+        </div>
+        <div id="aviso" class="col-sm-5">
+            Mural de Avisos
+        </div>
+        <div class="col-sm-1">
+            <a href="/edit/notification/">
+                <button class="btn btn-success" style="margin-left: 80px;">Publicar Aviso</button>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        {% for notification in notifications %}
+                <div class="col-sm-4">
+                    <div class="card" style="width:250px;">
+                        <h4 class="card-header">{{notification.title}}</h4>
+                        <div class="card-body">
+                            <p class="card-text">{{notification.description}}</p>
+                            <input type="hidden" id="id" name="id" value="{% if notification %}{{notification.id}}{% endif %}">
+                            <a id="view_notification" href="/view/notification/?id={{notification.id}}" notification-modal="1" class="btn btn-info">
+                                <span class="glyphicon glyphicon-eye-open" ></span>
+                            </a>
+                            <a id="edit_notification" href="/edit/notification/?id={{notification.id}}" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a id="delete_notification" href="/delete/notification/?id={{notification.id}}" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+
+</div>
+<div class="modal fade view_notification" tabindex="-1" aria-hidden="true">
+</div>
+<script>
+    $(document).on('click', 'a[notification-modal]', function(e) {
+        e.preventDefault();
+        $.get($(this).attr('href')).done(function (html) {
+            $('.modal.view_notification').html(html);
+            $('.modal.view_notification').modal('show');
+        });
+    });
+
+
+</script>
+
+{% endblock %}

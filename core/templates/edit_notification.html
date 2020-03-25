@@ -1,0 +1,80 @@
+{% extends "model-page.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<style>
+    h2 {
+        margin-top: 50px;
+    }
+</style>
+
+<div class="container">
+    <h2 style="font-family: Arial;">Publicação de Aviso</h2>
+    <hr>
+    <br>
+    <form enctype="multipart/form-data" method="POST" id="save_notification" class="save_notification_form" action="{% url 'save_notification' %}">
+        <div class="row">
+            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                <label>Título do Aviso</label>
+                <input class="form_control" type="hidden" name="id" value="{% if notification %} {{notification.id}} {% endif %}">
+                <input class="form-control" type="text" name="title" id="title" value="{% if notification %}{{notification.title}}{% endif %}">
+            </div>
+            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                <label>Descrição do Aviso</label>
+                <input class="form-control" type="text" name="description" id="description" value="{% if notification %}{{notification.description}}{% endif %}">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                <label>Aviso</label>
+                <textarea class="form-control" id="notification" name="notification" rows="15">{% if notification %}{{notification.notification}}{% endif %}</textarea>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                <button type="button" class="btn btn-success" id="btn_save">Salvar</button>
+            </div>
+        </div>
+        <br>
+        <div class="alert alert-danger alert-error-save"></div>
+        <br>
+    </form>
+
+    <script>
+
+        $(document).ready(function(){
+            $('.alert-error-save').hide();
+            $('#btn_save').click(function(e){
+                e.preventDefault();
+                $form = $('.save_notification_form');
+                var form = document.getElementById('save_notification');
+                var formData = new FormData(form);
+                console.log(formData);
+                $.ajax({
+                    type: $form.attr('method'),
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        if(data.success){
+                            location.href = '/list/notifications/'
+                        }
+                        else{
+                            $('.alert-error-save').html(data.message);
+                            $('.alert-error-save').show();
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+</div>
+
+
+
+{% endblock %}
