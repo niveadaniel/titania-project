@@ -20,7 +20,6 @@ def list_residents(request):
 
 
 def edit_resident(request):
-    print(request.GET)
     towers = Tower.objects.all()
     contract_types = OwnerContractType.objects.all()
     situations = OwnerSituation.objects.all()
@@ -117,8 +116,7 @@ def create_data_table_owners(owners):
 
 @csrf_exempt
 def get_owners_list(request):
-    print(request.POST)
-    tower = request.POST['tower']
+    tower = request.POST['tower'] if request.POST['tower'] else None
     draw = int(request.POST['draw'])
     value = request.POST['search[value]']
     owners = Owner.objects.all()
